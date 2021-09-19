@@ -9,11 +9,11 @@ export async function run(): Promise<void> {
     core.info(`Setup mkr (version = ${version})`);
 
     core.startGroup("download");
-    await download({ version });
+    const downloadResult = await download({ version });
     core.endGroup();
 
     core.startGroup("extract");
-    await extract();
+    await extract({ path: downloadResult.path });
     core.endGroup();
 
     core.startGroup("install");
@@ -50,6 +50,27 @@ async function download(params: DownloadParams): Promise<DownloadResult> {
   };
 }
 
-async function extract(): Promise<void> {}
+type ExtractParams = Readonly<{
+  path: string;
+}>;
+
+type ExtractResult = Readonly<{
+  path: string;
+}>;
+
+async function extract(params: ExtractParams): Promise<ExtractResult> {
+  core.info(`Extracting ${params.path}`);
+  let extractPath: string;
+  if (params.path.endsWith(".tar.gz")) {
+    extractPath = await tc.extractTar(params.path);
+  } else if (params.path.endsWith(".zip")) {
+    extractPath = await tc.extractZip(params.path);
+  } else {
+    throw new Error(`Unsupported archive: ${params.path}`);
+  }
+  return {
+    path: extractPath,
+  };
+}
 
 async function install(): Promise<void> {}

@@ -20,11 +20,11 @@ export function createDownloadSpec(params: CreateDownloadSpecParams): DownloadSp
 }
 
 function normalizeVersion(version: string): string {
-  const r = /^v?(\d+\.\d+\.\d+)$/.exec(version);
-  if (!r) {
+  const result = /^v?(\d+\.\d+\.\d+)$/.exec(version);
+  if (!result) {
     throw new Error(`Unsupported version format: ${version}`);
   }
-  return r[1];
+  return result[1];
 }
 
 function normalizePlatform(platform: NodeJS.Platform): MkrPlatform {
