@@ -30,6 +30,7 @@ exports.run = void 0;
 const os = __importStar(__nccwpck_require__(87));
 const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
+const hc = __importStar(__nccwpck_require__(925));
 const tc = __importStar(__nccwpck_require__(784));
 const mkr_1 = __nccwpck_require__(225);
 async function run() {
@@ -38,16 +39,12 @@ async function run() {
             version: core.getInput("version"),
         };
         core.info(`Setup mkr (version = ${inputs.version})`);
-        const spec = (0, mkr_1.createSpec)({
-            version: inputs.version,
-            platform: os.platform(),
-            arch: os.arch(),
-        });
+        const spec = await getSpec(inputs.version);
         const toolName = "mkr";
         let cachedPath = tc.find(toolName, spec.version);
         if (!cachedPath) {
-            const downloadedPath = await download(spec);
-            const extractedPath = await extract(downloadedPath);
+            const [downloadedPath, ext] = await download(spec);
+            const extractedPath = await extract(downloadedPath, ext);
             cachedPath = await tc.cacheDir(extractedPath, toolName, spec.version);
         }
         install(cachedPath);
@@ -58,19 +55,46 @@ async function run() {
     }
 }
 exports.run = run;
-async function download(spec) {
-    const downloadUrl = (0, mkr_1.createDownloadUrl)(spec);
-    core.info(`Downloading from ${downloadUrl}...`);
-    const downloadedPath = await tc.downloadTool(downloadUrl);
-    return downloadedPath;
+async function getSpec(version) {
+    let resolvedVersion;
+    if (version === "" || version === "latest") {
+        // get the latest version tag
+        const client = new hc.HttpClient();
+        client.requestOptions.allowRedirects = false;
+        const resp = await client.get("https://github.com/mackerelio/mkr/releases/latest");
+        const location = resp.message.headers["location"];
+        if (!location) {
+            throw new Error("Failed to find the latest version");
+        }
+        const r = /^https:\/\/github.com\/mackerelio\/mkr\/releases\/tag\/(.+)$/.exec(location);
+        if (!r) {
+            throw new Error(`Failed to parse the latest version: ${location}`);
+        }
+        resolvedVersion = r[1];
+    }
+    else {
+        resolvedVersion = version;
+    }
+    const spec = (0, mkr_1.createSpec)({
+        version: resolvedVersion,
+        platform: os.platform(),
+        arch: os.arch(),
+    });
+    return spec;
 }
-async function extract(path) {
+async function download(spec) {
+    const { url, ext } = (0, mkr_1.createDownloadUrl)(spec);
+    core.info(`Downloading from ${url}...`);
+    const downloadedPath = await tc.downloadTool(url);
+    return [downloadedPath, ext];
+}
+async function extract(path, ext) {
     core.info("Extracting...");
     let extractedPath;
-    if (path.endsWith(".tar.gz")) {
+    if (ext === "tar.gz") {
         extractedPath = await tc.extractTar(path);
     }
-    else if (path.endsWith(".zip")) {
+    else if (ext === "zip") {
         extractedPath = await tc.extractZip(path);
     }
     else {
@@ -113,14 +137,11 @@ function createSpec(params) {
 }
 exports.createSpec = createSpec;
 function normalizeVersion(version) {
-    if (version === "" || version === "latest") {
-        return "latest";
-    }
-    const result = /^v?(\d+\.\d+\.\d+)$/.exec(version);
-    if (!result) {
+    const r = /^v?(\d+\.\d+\.\d+)$/.exec(version);
+    if (!r) {
         throw new Error(`Unsupported version format: ${version}`);
     }
-    return result[1];
+    return r[1];
 }
 function normalizePlatform(platform) {
     switch (platform) {
@@ -151,12 +172,8 @@ function createDownloadUrl(spec) {
         linux: "tar.gz",
         darwin: "zip",
     }[spec.platform];
-    if (spec.version === "latest") {
-        return `https://github.com/mackerelio/mkr/releases/latest/download/mkr_${spec.platform}_${spec.arch}.${ext}`;
-    }
-    else {
-        return `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${ext}`;
-    }
+    const url = `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${ext}`;
+    return { url, ext };
 }
 exports.createDownloadUrl = createDownloadUrl;
 //# sourceMappingURL=mkr.js.map
