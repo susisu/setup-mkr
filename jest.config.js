@@ -1,9 +1,18 @@
+"use strict";
+
 module.exports = {
-  clearMocks: true,
-  moduleFileExtensions: ['js', 'ts'],
-  testMatch: ['**/*.test.ts'],
-  transform: {
-    '^.+\\.ts$': 'ts-jest'
+  roots: ["./src"],
+  testMatch: ["**/*.spec.ts"],
+  testEnvironment: "node",
+  collectCoverage: true,
+  collectCoverageFrom: ["./src/**/*.ts", "!./src/**/*.spec.ts"],
+  coverageDirectory: "coverage",
+  globals: {
+    "ts-jest": {
+      tsconfig: "./tsconfig.test.json",
+    },
   },
-  verbose: true
-}
+  transform: {
+    "\\.ts$": "ts-jest",
+  },
+};
