@@ -38,9 +38,9 @@ const utils_1 = __nccwpck_require__(918);
 async function run() {
     try {
         const inputs = {
-            version: core.getInput("version"),
+            version: core.getInput("mkr-version"),
         };
-        core.info(`Setup mkr (version = '${inputs.version}')`);
+        core.info(`Setup mkr (mkr-version = '${inputs.version}')`);
         const spec = await getSpec(inputs.version);
         const archive = (0, mkr_1.getArchiveInfo)(spec);
         const toolName = "mkr";
