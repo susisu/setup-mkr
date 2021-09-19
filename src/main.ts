@@ -1,3 +1,4 @@
+import * as childProcess from "child_process";
 import * as os from "os";
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
@@ -22,6 +23,8 @@ export async function run(): Promise<void> {
     }
 
     install(cachedPath);
+
+    await check();
   } catch (err: unknown) {
     core.setFailed(String(err));
   }
@@ -51,4 +54,16 @@ async function extract(path: string): Promise<string> {
 function install(path: string): void {
   core.info("Installing...");
   core.addPath(path);
+}
+
+async function check(): Promise<void> {
+  const mkrVersion = await new Promise<string>((resolve, reject) => {
+    childProcess.exec("mkr --version", (err, stdout) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(stdout);
+    });
+  });
+  core.info(mkrVersion);
 }
