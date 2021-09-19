@@ -10,7 +10,7 @@ export async function run(): Promise<void> {
     const inputs = {
       version: core.getInput("version"),
     };
-    core.info(`Setup mkr (version = ${inputs.version})`);
+    core.info(`Setup mkr (version = '${inputs.version}')`);
 
     const spec = await getSpec(inputs.version);
 
