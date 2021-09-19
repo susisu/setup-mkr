@@ -1,8 +1,20 @@
 {
-  "name": "typescript-action",
-  "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "name": "@susisu/setup-mkr",
+  "version": "0.0.0",
+  "description": "Setup mkr - CLI for Mackerel",
+  "keywords": [
+    "actions",
+    "setup",
+    "mkr",
+    "mackerel"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/susisu/setup-mkr.git"
+  },
+  "author": "Susisu <susisu2413@yahoo.co.jp>",
+  "license": "MIT",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -13,17 +25,6 @@
     "test": "jest",
     "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
-  },
-  "keywords": [
-    "actions",
-    "node",
-    "setup"
-  ],
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.4.0"
   },
