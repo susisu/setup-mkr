@@ -2,10 +2,8 @@ name: 'Setup mkr'
 description: 'Setup mkr - CLI for Mackerel'
 author: 'Susisu <susisu2413@yahoo.co.jp>'
 inputs:
-  milliseconds: # change this
-    required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  version:
+    description: 'The version of mkr to install.'
 runs:
   using: 'node12'
   main: 'dist/index.js'
