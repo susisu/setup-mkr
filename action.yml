@@ -1,6 +1,9 @@
 name: 'Setup mkr'
 description: 'Setup mkr - CLI for Mackerel'
 author: 'Susisu <susisu2413@yahoo.co.jp>'
+branding:
+  icon: activity
+  color: white
 inputs:
   mkr-version:
     description: 'The version of mkr to use.'
