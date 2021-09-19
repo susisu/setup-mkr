@@ -28,11 +28,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const os = __importStar(__nccwpck_require__(87));
+const path = __importStar(__nccwpck_require__(622));
 const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
 const hc = __importStar(__nccwpck_require__(925));
 const tc = __importStar(__nccwpck_require__(784));
 const mkr_1 = __nccwpck_require__(225);
+const utils_1 = __nccwpck_require__(918);
 async function run() {
     try {
         const inputs = {
@@ -40,15 +42,20 @@ async function run() {
         };
         core.info(`Setup mkr (version = '${inputs.version}')`);
         const spec = await getSpec(inputs.version);
+        const archive = (0, mkr_1.getArchiveInfo)(spec);
         const toolName = "mkr";
-        let cachedPath = tc.find(toolName, spec.version);
-        if (!cachedPath) {
-            const [downloadedPath, ext] = await download(spec);
-            const extractedPath = await extract(downloadedPath, ext);
-            cachedPath = await tc.cacheDir(extractedPath, toolName, spec.version);
+        let cachedDir = tc.find(toolName, spec.version);
+        if (cachedDir) {
+            core.debug(`Use cache in '${cachedDir}'`);
         }
-        install(cachedPath);
+        else {
+            const archivePath = await download(archive);
+            const extractedDir = await extract(archivePath, archive);
+            cachedDir = await tc.cacheDir(extractedDir, toolName, spec.version);
+        }
+        install(cachedDir, archive);
         await check();
+        core.debug("Done");
     }
     catch (err) {
         core.setFailed(String(err));
@@ -58,7 +65,8 @@ exports.run = run;
 async function getSpec(version) {
     let resolvedVersion;
     if (version === "" || version === "latest") {
-        // get the latest version tag
+        // fetch latest version
+        core.debug("Fetch latest version");
         const client = new hc.HttpClient(undefined, undefined, { allowRedirects: false });
         const resp = await client.get("https://github.com/mackerelio/mkr/releases/latest");
         const location = resp.message.headers["location"];
@@ -81,31 +89,28 @@ async function getSpec(version) {
     });
     return spec;
 }
-async function download(spec) {
-    const { url, ext } = (0, mkr_1.createDownloadUrl)(spec);
-    core.info(`Downloading from ${url}...`);
-    const downloadedPath = await tc.downloadTool(url);
-    return [downloadedPath, ext];
+async function download(archive) {
+    core.info(`Downloading... ${archive.url}`);
+    return tc.downloadTool(archive.url);
 }
-async function extract(path, ext) {
+async function extract(archivePath, archive) {
     core.info("Extracting...");
-    let extractedPath;
-    if (ext === "tar.gz") {
-        extractedPath = await tc.extractTar(path);
+    switch (archive.type) {
+        case "tar.gz":
+            return tc.extractTar(archivePath);
+        case "zip":
+            return tc.extractZip(archivePath);
+        default:
+            return (0, utils_1.unreachable)(archive.type);
     }
-    else if (ext === "zip") {
-        extractedPath = await tc.extractZip(path);
-    }
-    else {
-        throw new Error(`Unsupported archive type: ${path}`);
-    }
-    return extractedPath;
 }
-function install(path) {
-    core.info("Installing...");
-    core.addPath(path);
+function install(dir, archive) {
+    const binDir = path.join(dir, archive.binDir);
+    core.debug(`Add '${binDir}' to PATH`);
+    core.addPath(binDir);
 }
 async function check() {
+    core.debug("Exec 'mkr --version'");
     let mkrVersion = "";
     await exec.exec("mkr", ["--version"], {
         listeners: {
@@ -126,7 +131,7 @@ async function check() {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createDownloadUrl = exports.createSpec = void 0;
+exports.getArchiveInfo = exports.createSpec = void 0;
 function createSpec(params) {
     return {
         version: normalizeVersion(params.version),
@@ -166,16 +171,35 @@ function normalizeArch(arch) {
             throw new Error(`Unsupported arch: ${arch}`);
     }
 }
-function createDownloadUrl(spec) {
-    const ext = {
-        linux: "tar.gz",
-        darwin: "zip",
-    }[spec.platform];
-    const url = `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${ext}`;
-    return { url, ext };
+const archiveTypeByPlatform = {
+    linux: "tar.gz",
+    darwin: "zip",
+};
+function getArchiveInfo(spec) {
+    const type = archiveTypeByPlatform[spec.platform];
+    return {
+        type,
+        url: `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${type}`,
+        binDir: `mkr_${spec.platform}_${spec.arch}`,
+    };
 }
-exports.createDownloadUrl = createDownloadUrl;
+exports.getArchiveInfo = getArchiveInfo;
 //# sourceMappingURL=mkr.js.map
+
+/***/ }),
+
+/***/ 918:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.unreachable = void 0;
+function unreachable(x) {
+    throw new Error(`reached: ${JSON.stringify(x)}`);
+}
+exports.unreachable = unreachable;
+//# sourceMappingURL=utils.js.map
 
 /***/ }),
 
