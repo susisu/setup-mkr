@@ -8,17 +8,9 @@ export async function run(): Promise<void> {
     const version = core.getInput("version");
     core.info(`Setup mkr (version = ${version})`);
 
-    core.startGroup("download");
     const downloadResult = await download({ version });
-    core.endGroup();
-
-    core.startGroup("extract");
-    await extract({ path: downloadResult.path });
-    core.endGroup();
-
-    core.startGroup("install");
-    await install();
-    core.endGroup();
+    const extractResult = await extract({ path: downloadResult.path });
+    install({ path: extractResult.path });
   } catch (err: unknown) {
     core.setFailed(String(err));
   }
@@ -73,4 +65,11 @@ async function extract(params: ExtractParams): Promise<ExtractResult> {
   };
 }
 
-async function install(): Promise<void> {}
+type InstallParams = Readonly<{
+  path: string;
+}>;
+
+function install(params: InstallParams): void {
+  core.info(`Installing ${params.path}`);
+  core.addPath(params.path);
+}
