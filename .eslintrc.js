@@ -18,6 +18,9 @@ module.exports = {
         es6: true,
         node: true,
       },
+      globals: {
+        NodeJS: true,
+      },
       rules: {
         "eslint-comments/no-unused-disable": "error",
       },
