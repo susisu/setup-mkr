@@ -10,9 +10,9 @@ import { unreachable } from "./utils";
 export async function run(): Promise<void> {
   try {
     const inputs = {
-      version: core.getInput("version"),
+      version: core.getInput("mkr-version"),
     };
-    core.info(`Setup mkr (version = '${inputs.version}')`);
+    core.info(`Setup mkr (mkr-version = '${inputs.version}')`);
 
     const spec = await getSpec(inputs.version);
     const archive = getArchiveInfo(spec);

@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          version: ${{ github.event.inputs.version }}
+          mkr-version: ${{ github.event.inputs.version }}
       - run: mkr org
         env:
           MACKEREL_APIKEY: ${{ secrets.TEST_MACKEREL_APIKEY }}
