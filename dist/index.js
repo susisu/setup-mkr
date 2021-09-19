@@ -38,7 +38,7 @@ async function run() {
         const inputs = {
             version: core.getInput("version"),
         };
-        core.info(`Setup mkr (version = ${inputs.version})`);
+        core.info(`Setup mkr (version = '${inputs.version}')`);
         const spec = await getSpec(inputs.version);
         const toolName = "mkr";
         let cachedPath = tc.find(toolName, spec.version);
@@ -59,8 +59,7 @@ async function getSpec(version) {
     let resolvedVersion;
     if (version === "" || version === "latest") {
         // get the latest version tag
-        const client = new hc.HttpClient();
-        client.requestOptions.allowRedirects = false;
+        const client = new hc.HttpClient(undefined, undefined, { allowRedirects: false });
         const resp = await client.get("https://github.com/mackerelio/mkr/releases/latest");
         const location = resp.message.headers["location"];
         if (!location) {
