@@ -2,8 +2,7 @@ import * as childProcess from "child_process";
 import * as os from "os";
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
-import { createDownloadSpec, createDownloadUrl } from "./download";
-import { normalizeVersion } from "./version";
+import { MkrSpec, createSpec, createDownloadUrl } from "./mkr";
 
 export async function run(): Promise<void> {
   try {
@@ -12,14 +11,14 @@ export async function run(): Promise<void> {
     };
     core.info(`Setup mkr (version = ${inputs.version})`);
 
-    const version = normalizeVersion(inputs.version);
+    const spec = await getSpec(inputs.version);
 
     const toolName = "mkr";
-    let cachedPath = tc.find(toolName, version);
+    let cachedPath = tc.find(toolName, spec.version);
     if (!cachedPath) {
-      const downloadedPath = await download(version);
+      const downloadedPath = await download(spec);
       const extractedPath = await extract(downloadedPath);
-      cachedPath = await tc.cacheDir(extractedPath, toolName, version);
+      cachedPath = await tc.cacheDir(extractedPath, toolName, spec.version);
     }
 
     install(cachedPath);
@@ -30,8 +29,15 @@ export async function run(): Promise<void> {
   }
 }
 
-async function download(version: string): Promise<string> {
-  const spec = createDownloadSpec({ version, platform: os.platform(), arch: os.arch() });
+async function getSpec(version: string): Promise<MkrSpec> {
+  if (version === "" || version === "latest") {
+    // TODO
+  }
+  const spec = createSpec({ version, platform: os.platform(), arch: os.arch() });
+  return spec;
+}
+
+async function download(spec: MkrSpec): Promise<string> {
   const downloadUrl = createDownloadUrl(spec);
   core.info(`Downloading from ${downloadUrl}...`);
   const downloadedPath = await tc.downloadTool(downloadUrl);
