@@ -57,14 +57,14 @@ function normalizeArch(arch: string): MkrArch {
   }
 }
 
-export function createDownloadUrl(spec: MkrSpec): string {
+export function createDownloadUrl(spec: MkrSpec): { url: string; ext: string } {
   const ext = {
     linux: "tar.gz",
     darwin: "zip",
   }[spec.platform];
-  if (spec.version === "latest") {
-    return `https://github.com/mackerelio/mkr/releases/latest/download/mkr_${spec.platform}_${spec.arch}.${ext}`;
-  } else {
-    return `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${ext}`;
-  }
+  const url =
+    spec.version === "latest"
+      ? `https://github.com/mackerelio/mkr/releases/latest/download/mkr_${spec.platform}_${spec.arch}.${ext}`
+      : `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${ext}`;
+  return { url, ext };
 }

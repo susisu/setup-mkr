@@ -20,8 +20,8 @@ export async function run(): Promise<void> {
     const toolName = "mkr";
     let cachedPath = tc.find(toolName, spec.version);
     if (!cachedPath) {
-      const downloadedPath = await download(spec);
-      const extractedPath = await extract(downloadedPath);
+      const [downloadedPath, ext] = await download(spec);
+      const extractedPath = await extract(downloadedPath, ext);
       cachedPath = await tc.cacheDir(extractedPath, toolName, spec.version);
     }
 
@@ -33,19 +33,19 @@ export async function run(): Promise<void> {
   }
 }
 
-async function download(spec: MkrSpec): Promise<string> {
-  const downloadUrl = createDownloadUrl(spec);
-  core.info(`Downloading from ${downloadUrl}...`);
-  const downloadedPath = await tc.downloadTool(downloadUrl);
-  return downloadedPath;
+async function download(spec: MkrSpec): Promise<[path: string, ext: string]> {
+  const { url, ext } = createDownloadUrl(spec);
+  core.info(`Downloading from ${url}...`);
+  const downloadedPath = await tc.downloadTool(url);
+  return [downloadedPath, ext];
 }
 
-async function extract(path: string): Promise<string> {
+async function extract(path: string, ext: string): Promise<string> {
   core.info("Extracting...");
   let extractedPath: string;
-  if (path.endsWith(".tar.gz")) {
+  if (ext === "tar.gz") {
     extractedPath = await tc.extractTar(path);
-  } else if (path.endsWith(".zip")) {
+  } else if (ext === "zip") {
     extractedPath = await tc.extractZip(path);
   } else {
     throw new Error(`Unsupported archive type: ${path}`);

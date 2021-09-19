@@ -57,17 +57,26 @@ describe("createDownloadUrl", () => {
   it.each([
     [
       { version: "1.2.3", platform: "linux", arch: "amd64" },
-      "https://github.com/mackerelio/mkr/releases/download/v1.2.3/mkr_linux_amd64.tar.gz",
+      {
+        url: "https://github.com/mackerelio/mkr/releases/download/v1.2.3/mkr_linux_amd64.tar.gz",
+        ext: "tar.gz",
+      },
     ],
     [
       { version: "1.2.3", platform: "darwin", arch: "amd64" },
-      "https://github.com/mackerelio/mkr/releases/download/v1.2.3/mkr_darwin_amd64.zip",
+      {
+        url: "https://github.com/mackerelio/mkr/releases/download/v1.2.3/mkr_darwin_amd64.zip",
+        ext: "zip",
+      },
     ],
     [
       { version: "latest", platform: "linux", arch: "amd64" },
-      "https://github.com/mackerelio/mkr/releases/latest/download/mkr_linux_amd64.tar.gz",
+      {
+        url: "https://github.com/mackerelio/mkr/releases/latest/download/mkr_linux_amd64.tar.gz",
+        ext: "tar.gz",
+      },
     ],
   ] as const)("creates a download url from a spec (%p)", (input, output) => {
-    expect(createDownloadUrl(input)).toBe(output);
+    expect(createDownloadUrl(input)).toEqual(output);
   });
 });
