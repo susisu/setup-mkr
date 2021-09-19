@@ -111,15 +111,7 @@ function install(dir, archive) {
 }
 async function check() {
     core.debug("Exec 'mkr --version'");
-    let mkrVersion = "";
-    await exec.exec("mkr", ["--version"], {
-        listeners: {
-            stdout: data => {
-                mkrVersion += data.toString();
-            },
-        },
-    });
-    core.info(mkrVersion);
+    await exec.exec("mkr", ["--version"]);
 }
 //# sourceMappingURL=main.js.map
 
