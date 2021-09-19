@@ -15,7 +15,7 @@
   },
   "author": "Susisu <susisu2413@yahoo.co.jp>",
   "license": "MIT",
-  "main": "lib/main.js",
+  "main": "lib/index.js",
   "scripts": {
     "lint": "run-s lint:eslint lint:prettier",
     "lint-fix": "run-s lint-fix:eslint lint-fix:prettier",
