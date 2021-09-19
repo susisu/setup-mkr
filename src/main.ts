@@ -40,8 +40,8 @@ export async function run(): Promise<void> {
 async function getSpec(version: string): Promise<MkrSpec> {
   let resolvedVersion: string;
   if (version === "" || version === "latest") {
-    // fetch latest version
-    core.debug("Fetch latest version");
+    core.debug("Resolve latest version");
+    // In the future, the latest release may not be the latest version...
     const client = new hc.HttpClient(undefined, undefined, { allowRedirects: false });
     const resp = await client.get("https://github.com/mackerelio/mkr/releases/latest");
     const location = resp.message.headers["location"];
