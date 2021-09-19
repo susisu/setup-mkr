@@ -9,8 +9,6 @@ describe("createSpec", () => {
   it.each([
     ["1.2.3", "1.2.3"],
     ["v1.2.3", "1.2.3"],
-    ["", "latest"],
-    ["latest", "latest"],
   ])("normalizes version format (%s => %s)", (input, output) => {
     const spec = createSpec({ version: input, platform: "linux", arch: "x64" });
     expect(spec).toEqual({ version: output, platform: "linux", arch: "amd64" });
@@ -67,13 +65,6 @@ describe("createDownloadUrl", () => {
       {
         url: "https://github.com/mackerelio/mkr/releases/download/v1.2.3/mkr_darwin_amd64.zip",
         ext: "zip",
-      },
-    ],
-    [
-      { version: "latest", platform: "linux", arch: "amd64" },
-      {
-        url: "https://github.com/mackerelio/mkr/releases/latest/download/mkr_linux_amd64.tar.gz",
-        ext: "tar.gz",
       },
     ],
   ] as const)("creates a download url from a spec (%p)", (input, output) => {
