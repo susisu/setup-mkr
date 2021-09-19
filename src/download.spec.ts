@@ -6,17 +6,6 @@ describe("createDownloadSpec", () => {
     expect(spec).toEqual({ version: "1.2.3", platform: "linux", arch: "amd64" });
   });
 
-  it("normalizes version format", () => {
-    const spec = createDownloadSpec({ version: "1.2.3", platform: "linux", arch: "x64" });
-    expect(spec.version).toBe("1.2.3");
-  });
-
-  it("fails if version format is unsuported", () => {
-    expect(() => {
-      createDownloadSpec({ version: "alpha", platform: "linux", arch: "x64" });
-    }).toThrowError("Unsupported version format: alpha");
-  });
-
   it.each([
     ["linux", "linux"],
     ["darwin", "darwin"],

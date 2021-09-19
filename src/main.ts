@@ -2,74 +2,53 @@ import * as os from "os";
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 import { createDownloadSpec, createDownloadUrl } from "./download";
+import { normalizeVersion } from "./version";
 
 export async function run(): Promise<void> {
   try {
-    const version = core.getInput("version");
-    core.info(`Setup mkr (version = ${version})`);
+    const inputs = {
+      version: core.getInput("version"),
+    };
+    core.info(`Setup mkr (version = ${inputs.version})`);
 
-    const downloadResult = await download({ version });
-    const extractResult = await extract({ path: downloadResult.path });
-    install({ path: extractResult.path });
+    const version = normalizeVersion(inputs.version);
+
+    const toolName = "mkr";
+    let cachedPath = tc.find(toolName, version);
+    if (!cachedPath) {
+      const downloadedPath = await download(version);
+      const extractedPath = await extract(downloadedPath);
+      cachedPath = await tc.cacheDir(extractedPath, toolName, version);
+    }
+
+    install(cachedPath);
   } catch (err: unknown) {
     core.setFailed(String(err));
   }
 }
 
-type DownloadParams = Readonly<{
-  version: string;
-}>;
-
-type DownloadResult = Readonly<{
-  path: string;
-  version: string;
-}>;
-
-async function download(params: DownloadParams): Promise<DownloadResult> {
-  const spec = createDownloadSpec({
-    version: params.version,
-    platform: os.platform(),
-    arch: os.arch(),
-  });
+async function download(version: string): Promise<string> {
+  const spec = createDownloadSpec({ version, platform: os.platform(), arch: os.arch() });
   const downloadUrl = createDownloadUrl(spec);
-
-  core.info(`Downloading ${downloadUrl}`);
-  const downloadPath = await tc.downloadTool(downloadUrl);
-
-  return {
-    path: downloadPath,
-    version: spec.version,
-  };
+  core.info(`Downloading from ${downloadUrl}...`);
+  const downloadedPath = await tc.downloadTool(downloadUrl);
+  return downloadedPath;
 }
 
-type ExtractParams = Readonly<{
-  path: string;
-}>;
-
-type ExtractResult = Readonly<{
-  path: string;
-}>;
-
-async function extract(params: ExtractParams): Promise<ExtractResult> {
-  core.info(`Extracting ${params.path}`);
-  let extractPath: string;
-  if (params.path.endsWith(".tar.gz")) {
-    extractPath = await tc.extractTar(params.path);
-  } else if (params.path.endsWith(".zip")) {
-    extractPath = await tc.extractZip(params.path);
+async function extract(path: string): Promise<string> {
+  core.info("Extracting...");
+  let extractedPath: string;
+  if (path.endsWith(".tar.gz")) {
+    extractedPath = await tc.extractTar(path);
+  } else if (path.endsWith(".zip")) {
+    extractedPath = await tc.extractZip(path);
   } else {
-    throw new Error(`Unsupported archive: ${params.path}`);
+    throw new Error(`Unsupported archive type: ${path}`);
   }
-  return {
-    path: extractPath,
-  };
+  return extractedPath;
 }
 
-type InstallParams = Readonly<{
-  path: string;
-}>;
-
-function install(params: InstallParams): void {
-  core.info(`Installing ${params.path}`);
-  core.addPath(params.path);
+function install(path: string): void {
+  core.info("Installing...");
+  core.addPath(path);
 }

@@ -13,18 +13,11 @@ type CreateDownloadSpecParams = Readonly<{
 }>;
 
 export function createDownloadSpec(params: CreateDownloadSpecParams): DownloadSpec {
-  const version = normalizeVersion(params.version);
-  const platform = normalizePlatform(params.platform);
-  const arch = normalizeArch(params.arch);
-  return { version, platform, arch };
-}
-
-function normalizeVersion(version: string): string {
-  const result = /^v?(\d+\.\d+\.\d+)$/.exec(version);
-  if (!result) {
-    throw new Error(`Unsupported version format: ${version}`);
-  }
-  return result[1];
+  return {
+    version: params.version,
+    platform: normalizePlatform(params.platform),
+    arch: normalizeArch(params.arch),
+  };
 }
 
 function normalizePlatform(platform: NodeJS.Platform): MkrPlatform {
