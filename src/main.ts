@@ -1,6 +1,6 @@
-import * as childProcess from "child_process";
 import * as os from "os";
 import * as core from "@actions/core";
+import * as exec from "@actions/exec";
 import * as tc from "@actions/tool-cache";
 import { MkrSpec, createSpec, createDownloadUrl } from "./mkr";
 
@@ -63,13 +63,13 @@ function install(path: string): void {
 }
 
 async function check(): Promise<void> {
-  const mkrVersion = await new Promise<string>((resolve, reject) => {
-    childProcess.exec("mkr --version", (err, stdout) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(stdout);
-    });
+  let mkrVersion = "";
+  await exec.exec("mkr", ["--version"], {
+    listeners: {
+      stdout: data => {
+        mkrVersion += data.toString();
+      },
+    },
   });
   core.info(mkrVersion);
 }
