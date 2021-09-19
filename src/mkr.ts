@@ -21,11 +21,11 @@ export function createSpec(params: CreateSpecParams): MkrSpec {
 }
 
 function normalizeVersion(version: string): string {
-  const result = /^v?(\d+\.\d+\.\d+)$/.exec(version);
-  if (!result) {
+  const r = /^v?(\d+\.\d+\.\d+)$/.exec(version);
+  if (!r) {
     throw new Error(`Unsupported version format: ${version}`);
   }
-  return result[1];
+  return r[1];
 }
 
 function normalizePlatform(platform: NodeJS.Platform): MkrPlatform {

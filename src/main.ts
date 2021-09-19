@@ -1,6 +1,7 @@
 import * as os from "os";
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
+import * as hc from "@actions/http-client";
 import * as tc from "@actions/tool-cache";
 import { MkrSpec, createSpec, createDownloadUrl } from "./mkr";
 
@@ -30,11 +31,26 @@ export async function run(): Promise<void> {
 }
 
 async function getSpec(version: string): Promise<MkrSpec> {
+  let resolvedVersion: string;
   if (version === "" || version === "latest") {
-    // TODO
+    // get the latest version tag
+    const client = new hc.HttpClient();
+    client.requestOptions.allowRedirects = false;
+    const resp = await client.get("https://github.com/mackerelio/mkr/releases/latest");
+    const location = resp.message.headers["location"];
+    if (!location) {
+      throw new Error("Failed to find the latest version");
+    }
+    const r = /^https:\/\/github.com\/mackerelio\/mkr\/releases\/tag\/(.+)$/.exec(location);
+    if (!r) {
+      throw new Error(`Failed to parse the latest version: ${location}`);
+    }
+    resolvedVersion = r[1];
+  } else {
+    resolvedVersion = version;
   }
   const spec = createSpec({
-    version,
+    version: resolvedVersion,
     platform: os.platform(),
     arch: os.arch(),
   });
