@@ -89,13 +89,5 @@ function install(dir: string, archive: ArchiveInfo): void {
 
 async function check(): Promise<void> {
   core.debug("Exec 'mkr --version'");
-  let mkrVersion = "";
-  await exec.exec("mkr", ["--version"], {
-    listeners: {
-      stdout: data => {
-        mkrVersion += data.toString();
-      },
-    },
-  });
-  core.info(mkrVersion);
+  await exec.exec("mkr", ["--version"]);
 }
