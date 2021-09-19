@@ -29,7 +29,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 async function run() {
     const version = core.getInput("version");
-    core.setOutput("version", version);
+    core.info(`Setup mkr (version = ${version})`);
 }
 run().catch(err => {
     core.setFailed(String(err));
