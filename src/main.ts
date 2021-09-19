@@ -11,7 +11,11 @@ export async function run(): Promise<void> {
     };
     core.info(`Setup mkr (version = ${inputs.version})`);
 
-    const spec = await getSpec(inputs.version);
+    const spec = createSpec({
+      version: inputs.version,
+      platform: os.platform(),
+      arch: os.arch(),
+    });
 
     const toolName = "mkr";
     let cachedPath = tc.find(toolName, spec.version);
@@ -27,14 +31,6 @@ export async function run(): Promise<void> {
   } catch (err: unknown) {
     core.setFailed(String(err));
   }
-}
-
-async function getSpec(version: string): Promise<MkrSpec> {
-  if (version === "" || version === "latest") {
-    // TODO
-  }
-  const spec = createSpec({ version, platform: os.platform(), arch: os.arch() });
-  return spec;
 }
 
 async function download(spec: MkrSpec): Promise<string> {

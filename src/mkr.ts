@@ -21,6 +21,9 @@ export function createSpec(params: CreateSpecParams): MkrSpec {
 }
 
 function normalizeVersion(version: string): string {
+  if (version === "" || version === "latest") {
+    return "latest";
+  }
   const result = /^v?(\d+\.\d+\.\d+)$/.exec(version);
   if (!result) {
     throw new Error(`Unsupported version format: ${version}`);
@@ -59,5 +62,9 @@ export function createDownloadUrl(spec: MkrSpec): string {
     linux: "tar.gz",
     darwin: "zip",
   }[spec.platform];
-  return `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${ext}`;
+  if (spec.version === "latest") {
+    return `https://github.com/mackerelio/mkr/releases/latest/download/mkr_${spec.platform}_${spec.arch}.${ext}`;
+  } else {
+    return `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${ext}`;
+  }
 }
