@@ -16,6 +16,7 @@ module.exports = {
       },
       env: {
         es6: true,
+        node: true,
       },
       rules: {
         "eslint-comments/no-unused-disable": "error",
