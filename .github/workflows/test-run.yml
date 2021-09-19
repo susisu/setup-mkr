@@ -1,6 +1,9 @@
-name: Test Run
+name: 'Test Run'
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version of mkr to install.'
 
 jobs:
   run:
@@ -8,3 +11,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
+        with:
+          version: ${{ github.event.inputs.version }}
