@@ -54,11 +54,23 @@ function normalizeArch(arch: string): MkrArch {
   }
 }
 
-export function createDownloadUrl(spec: MkrSpec): { url: string; ext: string } {
-  const ext = {
-    linux: "tar.gz",
-    darwin: "zip",
-  }[spec.platform];
-  const url = `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${ext}`;
-  return { url, ext };
+type ArchiveType = "tar.gz" | "zip";
+export type ArchiveInfo = Readonly<{
+  type: ArchiveType;
+  url: string;
+  binDir: string;
+}>;
+
+const archiveTypeByPlatform: Readonly<{ [P in MkrPlatform]: ArchiveType }> = {
+  linux: "tar.gz",
+  darwin: "zip",
+};
+
+export function getArchiveInfo(spec: MkrSpec): ArchiveInfo {
+  const type = archiveTypeByPlatform[spec.platform];
+  return {
+    type,
+    url: `https://github.com/mackerelio/mkr/releases/download/v${spec.version}/mkr_${spec.platform}_${spec.arch}.${type}`,
+    binDir: `mkr_${spec.platform}_${spec.arch}`,
+  };
 }

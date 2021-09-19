@@ -1,9 +1,10 @@
 import * as os from "os";
+import * as path from "path";
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import * as hc from "@actions/http-client";
 import * as tc from "@actions/tool-cache";
-import { MkrSpec, createSpec, createDownloadUrl } from "./mkr";
+import { MkrSpec, ArchiveInfo, createSpec, getArchiveInfo } from "./mkr";
 
 export async function run(): Promise<void> {
   try {
@@ -13,16 +14,17 @@ export async function run(): Promise<void> {
     core.info(`Setup mkr (version = '${inputs.version}')`);
 
     const spec = await getSpec(inputs.version);
+    const archive = getArchiveInfo(spec);
 
     const toolName = "mkr";
-    let cachedPath = tc.find(toolName, spec.version);
-    if (!cachedPath) {
-      const [downloadedPath, ext] = await download(spec);
-      const extractedPath = await extract(downloadedPath, ext);
-      cachedPath = await tc.cacheDir(extractedPath, toolName, spec.version);
+    let cachedDir = tc.find(toolName, spec.version);
+    if (!cachedDir) {
+      const archivePath = await download(archive);
+      const extractedDir = await extract(archivePath, archive);
+      cachedDir = await tc.cacheDir(extractedDir, toolName, spec.version);
     }
 
-    install(cachedPath);
+    install(cachedDir, archive);
 
     await check();
   } catch (err: unknown) {
@@ -56,29 +58,26 @@ async function getSpec(version: string): Promise<MkrSpec> {
   return spec;
 }
 
-async function download(spec: MkrSpec): Promise<[path: string, ext: string]> {
-  const { url, ext } = createDownloadUrl(spec);
-  core.info(`Downloading from ${url}...`);
-  const downloadedPath = await tc.downloadTool(url);
-  return [downloadedPath, ext];
+async function download(archive: ArchiveInfo): Promise<string> {
+  core.info(`Downloading from ${archive.url}`);
+  return tc.downloadTool(archive.url);
 }
 
-async function extract(path: string, ext: string): Promise<string> {
+async function extract(archivePath: string, archive: ArchiveInfo): Promise<string> {
   core.info("Extracting...");
-  let extractedPath: string;
-  if (ext === "tar.gz") {
-    extractedPath = await tc.extractTar(path);
-  } else if (ext === "zip") {
-    extractedPath = await tc.extractZip(path);
-  } else {
-    throw new Error(`Unsupported archive type: ${path}`);
+  switch (archive.type) {
+    case "tar.gz":
+      return tc.extractTar(archivePath);
+    case "zip":
+      return tc.extractZip(archivePath);
+    default:
+      return unreachable(archive.type);
   }
-  return extractedPath;
 }
 
-function install(path: string): void {
+function install(dir: string, archive: ArchiveInfo): void {
   core.info("Installing...");
-  core.addPath(path);
+  core.addPath(path.join(dir, archive.binDir));
 }
 
 async function check(): Promise<void> {
@@ -91,4 +90,8 @@ async function check(): Promise<void> {
     },
   });
   core.info(mkrVersion);
+}
+
+function unreachable(x: never): never {
+  throw new Error(`reached: ${JSON.stringify(x)}`);
 }

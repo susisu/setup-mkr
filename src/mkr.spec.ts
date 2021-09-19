@@ -1,4 +1,4 @@
-import { createSpec, createDownloadUrl } from "./mkr";
+import { createSpec, getArchiveInfo } from "./mkr";
 
 describe("createSpec", () => {
   it("creates a spec", () => {
@@ -51,23 +51,25 @@ describe("createSpec", () => {
   });
 });
 
-describe("createDownloadUrl", () => {
+describe("getArchiveInfo", () => {
   it.each([
     [
       { version: "1.2.3", platform: "linux", arch: "amd64" },
       {
+        type: "tar.gz",
         url: "https://github.com/mackerelio/mkr/releases/download/v1.2.3/mkr_linux_amd64.tar.gz",
-        ext: "tar.gz",
+        binDir: "mkr_linux_amd64",
       },
     ],
     [
       { version: "1.2.3", platform: "darwin", arch: "amd64" },
       {
+        type: "zip",
         url: "https://github.com/mackerelio/mkr/releases/download/v1.2.3/mkr_darwin_amd64.zip",
-        ext: "zip",
+        binDir: "mkr_darwin_amd64",
       },
     ],
-  ] as const)("creates a download url from a spec (%p)", (input, output) => {
-    expect(createDownloadUrl(input)).toEqual(output);
+  ] as const)("gets archive information from a spec (%p)", (input, output) => {
+    expect(getArchiveInfo(input)).toEqual(output);
   });
 });
