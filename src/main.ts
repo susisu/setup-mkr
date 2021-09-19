@@ -5,6 +5,7 @@ import * as exec from "@actions/exec";
 import * as hc from "@actions/http-client";
 import * as tc from "@actions/tool-cache";
 import { MkrSpec, ArchiveInfo, createSpec, getArchiveInfo } from "./mkr";
+import { unreachable } from "./utils";
 
 export async function run(): Promise<void> {
   try {
@@ -18,7 +19,9 @@ export async function run(): Promise<void> {
 
     const toolName = "mkr";
     let cachedDir = tc.find(toolName, spec.version);
-    if (!cachedDir) {
+    if (cachedDir) {
+      core.debug(`Use cache in '${cachedDir}'`);
+    } else {
       const archivePath = await download(archive);
       const extractedDir = await extract(archivePath, archive);
       cachedDir = await tc.cacheDir(extractedDir, toolName, spec.version);
@@ -27,6 +30,8 @@ export async function run(): Promise<void> {
     install(cachedDir, archive);
 
     await check();
+
+    core.debug("Done");
   } catch (err: unknown) {
     core.setFailed(String(err));
   }
@@ -35,7 +40,8 @@ export async function run(): Promise<void> {
 async function getSpec(version: string): Promise<MkrSpec> {
   let resolvedVersion: string;
   if (version === "" || version === "latest") {
-    // get the latest version tag
+    // fetch latest version
+    core.debug("Fetch latest version");
     const client = new hc.HttpClient(undefined, undefined, { allowRedirects: false });
     const resp = await client.get("https://github.com/mackerelio/mkr/releases/latest");
     const location = resp.message.headers["location"];
@@ -59,7 +65,7 @@ async function getSpec(version: string): Promise<MkrSpec> {
 }
 
 async function download(archive: ArchiveInfo): Promise<string> {
-  core.info(`Downloading from ${archive.url}`);
+  core.info(`Downloading... ${archive.url}`);
   return tc.downloadTool(archive.url);
 }
 
@@ -76,11 +82,13 @@ async function extract(archivePath: string, archive: ArchiveInfo): Promise<strin
 }
 
 function install(dir: string, archive: ArchiveInfo): void {
-  core.info("Installing...");
-  core.addPath(path.join(dir, archive.binDir));
+  const binDir = path.join(dir, archive.binDir);
+  core.debug(`Add '${binDir}' to PATH`);
+  core.addPath(binDir);
 }
 
 async function check(): Promise<void> {
+  core.debug("Exec 'mkr --version'");
   let mkrVersion = "";
   await exec.exec("mkr", ["--version"], {
     listeners: {
@@ -90,8 +98,4 @@ async function check(): Promise<void> {
     },
   });
   core.info(mkrVersion);
-}
-
-function unreachable(x: never): never {
-  throw new Error(`reached: ${JSON.stringify(x)}`);
 }
