@@ -1,7 +1,7 @@
 # Setup mkr
 [![CI](https://github.com/susisu/setup-mkr/workflows/CI/badge.svg)](https://github.com/susisu/setup-mkr/actions?query=workflow%3ACI)
 
-This action sets up [`mkr`](https://github.com/mackerelio/mkr), the official CLI for [Mackerel](https://mackerel.io/).
+This action sets up [`mkr`](https://github.com/mackerelio/mkr), the official CLI for [Mackerel](https://en.mackerel.io/).
 
 **Please note that this action itself is NOT an official product of Mackerel.**
 
