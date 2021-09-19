@@ -7,9 +7,17 @@ on:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./
         with:
           version: ${{ github.event.inputs.version }}
+      - run: mkr org
+        env:
+          MACKEREL_APIKEY: ${{ secrets.TEST_MACKEREL_APIKEY }}
