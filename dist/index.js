@@ -26,7 +26,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.run = void 0;
+exports.getToken = exports.getVersion = exports.run = void 0;
 const path = __importStar(__nccwpck_require__(622));
 const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
@@ -35,10 +35,13 @@ async function run() {
     try {
         const inputs = {
             version: core.getInput("mkr-version"),
+            token: core.getInput("token"),
         };
         core.info(`Setup mkr (mkr-version = '${inputs.version}')`);
         const version = getVersion(inputs);
-        const release = await findRelease(version);
+        const token = getToken(inputs);
+        const release = await findRelease(version, token);
+        core.info(`Use mkr ${release.version}`);
         const file = release.files[0];
         const toolPath = await download(release, file);
         install(toolPath, file);
@@ -56,9 +59,14 @@ function getVersion(inputs) {
     }
     return inputs.version;
 }
-async function findRelease(version) {
+exports.getVersion = getVersion;
+function getToken(inputs) {
+    return inputs.token || undefined;
+}
+exports.getToken = getToken;
+async function findRelease(version, token) {
     core.debug(`Find release for version '${version}'`);
-    const manifest = await tc.getManifestFromRepo("susisu", "mkr-versions", undefined, "main");
+    const manifest = await tc.getManifestFromRepo("susisu", "mkr-versions", token, "main");
     const release = await tc.findFromManifest(version, true, manifest);
     if (!release) {
         throw new Error(`Release not fouond for version '${version}'`);
@@ -66,7 +74,6 @@ async function findRelease(version) {
     return release;
 }
 async function download(release, file) {
-    core.info(`Download mkr ${release.version}`);
     const toolName = "mkr";
     let toolPath = tc.find(toolName, release.version);
     if (toolPath) {
@@ -93,11 +100,7 @@ async function download(release, file) {
 function install(toolPath, file) {
     // The executable is placed under the directory whose name is the same as the archive file name
     // excluding the file extension.
-    const r = /^([^.]+)\./.exec(file.filename);
-    if (!r) {
-        throw new Error(`Unexpected filename '${file.filename}'`);
-    }
-    const binDirPath = path.join(toolPath, r[1]);
+    const binDirPath = path.join(toolPath, file.filename.split(".")[0]);
     core.debug(`Add '${binDirPath}' to PATH`);
     core.addPath(binDirPath);
 }
