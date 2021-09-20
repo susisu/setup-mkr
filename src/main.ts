@@ -48,7 +48,7 @@ async function getSpec(version: string): Promise<MkrSpec> {
     if (!location) {
       throw new Error("Failed to find the latest version");
     }
-    const r = /^https:\/\/github.com\/mackerelio\/mkr\/releases\/tag\/(.+)$/.exec(location);
+    const r = /^https:\/\/github.com\/mackerelio\/mkr\/releases\/tag\/v(.+)$/.exec(location);
     if (!r) {
       throw new Error(`Failed to parse the latest version: ${location}`);
     }
