@@ -15,12 +15,12 @@ steps:
     MACKEREL_APIKEY: ${{ secrets.MACKEREL_APIKEY }}
 ```
 
-It sets up the latest version of `mkr` by default. You can optionally set `mkr-version` to use a specific version of `mkr`.
+It sets up the latest version of `mkr` by default. You can optionally set `mkr-version` to select a specific version of `mkr`.
 
 ``` yml
 - uses: susisu/setup-mkr@v1
   with:
-    mkr-version: v0.45.2
+    mkr-version: '^0.45.0'
 ```
 
 ## License
