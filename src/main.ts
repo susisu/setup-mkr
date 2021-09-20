@@ -5,17 +5,21 @@ import * as tc from "@actions/tool-cache";
 
 type Inputs = Readonly<{
   version: string;
+  token: string;
 }>;
 
 export async function run(): Promise<void> {
   try {
     const inputs: Inputs = {
       version: core.getInput("mkr-version"),
+      token: core.getInput("token"),
     };
     core.info(`Setup mkr (mkr-version = '${inputs.version}')`);
 
     const version = getVersion(inputs);
-    const release = await findRelease(version);
+    const token = getToken(inputs);
+
+    const release = await findRelease(version, token);
     const file = release.files[0];
     core.info(`Use mkr ${release.version}`);
     const toolPath = await download(release, file);
@@ -35,9 +39,13 @@ function getVersion(inputs: Inputs): string {
   return inputs.version;
 }
 
-async function findRelease(version: string): Promise<tc.IToolRelease> {
+function getToken(inputs: Inputs): string | undefined {
+  return inputs.token || undefined;
+}
+
+async function findRelease(version: string, token: string | undefined): Promise<tc.IToolRelease> {
   core.debug(`Find release for version '${version}'`);
-  const manifest = await tc.getManifestFromRepo("susisu", "mkr-versions", undefined, "main");
+  const manifest = await tc.getManifestFromRepo("susisu", "mkr-versions", token, "main");
   const release = await tc.findFromManifest(version, true, manifest);
   if (!release) {
     throw new Error(`Release not fouond for version '${version}'`);
