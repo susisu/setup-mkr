@@ -10,7 +10,7 @@ This action sets up [`mkr`](https://github.com/mackerelio/mkr), the official CLI
 steps:
 - uses: actions/checkout@v2
 - uses: susisu/setup-mkr@v1
-- run: mkr org # run commands you want
+- run: mkr org # or `mkr throw`, `mkr wrap`, `mkr annotations create`, ... 
   env:
     MACKEREL_APIKEY: ${{ secrets.MACKEREL_APIKEY }}
 ```
