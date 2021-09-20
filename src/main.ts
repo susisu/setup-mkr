@@ -3,7 +3,7 @@ import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import * as tc from "@actions/tool-cache";
 
-type Inputs = Readonly<{
+export type Inputs = Readonly<{
   version: string;
   token: string;
 }>;
@@ -20,26 +20,27 @@ export async function run(): Promise<void> {
     const token = getToken(inputs);
 
     const release = await findRelease(version, token);
-    const file = release.files[0];
     core.info(`Use mkr ${release.version}`);
+
+    const file = release.files[0];
     const toolPath = await download(release, file);
     install(toolPath, file);
-    await check();
 
+    await check();
     core.debug("Done");
   } catch (err: unknown) {
     core.setFailed(String(err));
   }
 }
 
-function getVersion(inputs: Inputs): string {
+export function getVersion(inputs: Inputs): string {
   if (inputs.version === "" || inputs.version === "latest") {
     return "<1.0.0";
   }
   return inputs.version;
 }
 
-function getToken(inputs: Inputs): string | undefined {
+export function getToken(inputs: Inputs): string | undefined {
   return inputs.token || undefined;
 }
 
@@ -82,11 +83,7 @@ async function download(release: tc.IToolRelease, file: tc.IToolReleaseFile): Pr
 function install(toolPath: string, file: tc.IToolReleaseFile): void {
   // The executable is placed under the directory whose name is the same as the archive file name
   // excluding the file extension.
-  const r = /^([^.]+)\./.exec(file.filename);
-  if (!r) {
-    throw new Error(`Unexpected filename '${file.filename}'`);
-  }
-  const binDirPath = path.join(toolPath, r[1]);
+  const binDirPath = path.join(toolPath, file.filename.split(".")[0]);
   core.debug(`Add '${binDirPath}' to PATH`);
   core.addPath(binDirPath);
 }
