@@ -17,6 +17,7 @@ export async function run(): Promise<void> {
     const version = getVersion(inputs);
     const release = await findRelease(version);
     const file = release.files[0];
+    core.info(`Use mkr ${release.version}`);
     const toolPath = await download(release, file);
     install(toolPath, file);
     await check();
@@ -45,8 +46,6 @@ async function findRelease(version: string): Promise<tc.IToolRelease> {
 }
 
 async function download(release: tc.IToolRelease, file: tc.IToolReleaseFile): Promise<string> {
-  core.info(`Download mkr ${release.version}`);
-
   const toolName = "mkr";
 
   let toolPath = tc.find(toolName, release.version);
