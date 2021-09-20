@@ -1,34 +1,24 @@
-import * as os from "os";
 import * as path from "path";
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
-import * as hc from "@actions/http-client";
 import * as tc from "@actions/tool-cache";
-import { MkrSpec, ArchiveInfo, createSpec, getArchiveInfo } from "./mkr";
-import { unreachable } from "./utils";
+
+type Inputs = Readonly<{
+  version: string;
+}>;
 
 export async function run(): Promise<void> {
   try {
-    const inputs = {
+    const inputs: Inputs = {
       version: core.getInput("mkr-version"),
     };
     core.info(`Setup mkr (mkr-version = '${inputs.version}')`);
 
-    const spec = await getSpec(inputs.version);
-    const archive = getArchiveInfo(spec);
-
-    const toolName = "mkr";
-    let cachedDir = tc.find(toolName, spec.version);
-    if (cachedDir) {
-      core.debug(`Use cache in '${cachedDir}'`);
-    } else {
-      const archivePath = await download(archive);
-      const extractedDir = await extract(archivePath, archive);
-      cachedDir = await tc.cacheDir(extractedDir, toolName, spec.version);
-    }
-
-    install(cachedDir, archive);
-
+    const version = getVersion(inputs);
+    const release = await findRelease(version);
+    const file = release.files[0];
+    const toolPath = await download(release, file);
+    install(toolPath, file);
     await check();
 
     core.debug("Done");
@@ -37,54 +27,61 @@ export async function run(): Promise<void> {
   }
 }
 
-async function getSpec(version: string): Promise<MkrSpec> {
-  let resolvedVersion: string;
-  if (version === "" || version === "latest") {
-    core.debug("Resolve latest version");
-    // In the future, the latest release may not be the latest version...
-    const client = new hc.HttpClient(undefined, undefined, { allowRedirects: false });
-    const resp = await client.get("https://github.com/mackerelio/mkr/releases/latest");
-    const location = resp.message.headers["location"];
-    if (!location) {
-      throw new Error("Failed to find the latest version");
-    }
-    const r = /^https:\/\/github.com\/mackerelio\/mkr\/releases\/tag\/v(.+)$/.exec(location);
-    if (!r) {
-      throw new Error(`Failed to parse the latest version: ${location}`);
-    }
-    resolvedVersion = r[1];
+function getVersion(inputs: Inputs): string {
+  if (inputs.version === "" || inputs.version === "latest") {
+    return "<1.0.0";
+  }
+  return inputs.version;
+}
+
+async function findRelease(version: string): Promise<tc.IToolRelease> {
+  core.debug(`Find release for version '${version}'`);
+  const manifest = await tc.getManifestFromRepo("susisu", "mkr-versions", undefined, "main");
+  const release = await tc.findFromManifest(version, true, manifest);
+  if (!release) {
+    throw new Error(`Release not fouond for version '${version}'`);
+  }
+  return release;
+}
+
+async function download(release: tc.IToolRelease, file: tc.IToolReleaseFile): Promise<string> {
+  core.info(`Download mkr ${release.version}`);
+
+  const toolName = "mkr";
+
+  let toolPath = tc.find(toolName, release.version);
+  if (toolPath) {
+    core.debug(`Cache found at '${toolPath}'`);
   } else {
-    resolvedVersion = version;
+    core.info(`Downloading... ${file.download_url}`);
+    const filePath = await tc.downloadTool(file.download_url);
+
+    core.info("Extracting...");
+    let extractedPath: string;
+    if (file.filename.endsWith(".tar.gz")) {
+      extractedPath = await tc.extractTar(filePath);
+    } else if (file.filename.endsWith(".zip")) {
+      extractedPath = await tc.extractZip(filePath);
+    } else {
+      throw new Error(`Unsupported archive '${file.filename}'`);
+    }
+
+    toolPath = await tc.cacheDir(extractedPath, toolName, release.version);
   }
-  const spec = createSpec({
-    version: resolvedVersion,
-    platform: os.platform(),
-    arch: os.arch(),
-  });
-  return spec;
+
+  return toolPath;
 }
 
-async function download(archive: ArchiveInfo): Promise<string> {
-  core.info(`Downloading... ${archive.url}`);
-  return tc.downloadTool(archive.url);
-}
-
-async function extract(archivePath: string, archive: ArchiveInfo): Promise<string> {
-  core.info("Extracting...");
-  switch (archive.type) {
-    case "tar.gz":
-      return tc.extractTar(archivePath);
-    case "zip":
-      return tc.extractZip(archivePath);
-    default:
-      return unreachable(archive.type);
+function install(toolPath: string, file: tc.IToolReleaseFile): void {
+  // The executable is placed under the directory whose name is the same as the archive file name
+  // excluding the file extension.
+  const r = /^([^.]+)\./.exec(file.filename);
+  if (!r) {
+    throw new Error(`Unexpected filename '${file.filename}'`);
   }
-}
-
-function install(dir: string, archive: ArchiveInfo): void {
-  const binDir = path.join(dir, archive.binDir);
-  core.debug(`Add '${binDir}' to PATH`);
-  core.addPath(binDir);
+  const binDirPath = path.join(toolPath, r[1]);
+  core.debug(`Add '${binDirPath}' to PATH`);
+  core.addPath(binDirPath);
 }
 
 async function check(): Promise<void> {
