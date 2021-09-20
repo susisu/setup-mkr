@@ -1,3 +1,5 @@
+import * as semver from "semver";
+
 type MkrPlatform = "linux" | "darwin";
 type MkrArch = "386" | "amd64" | "arm" | "arm64";
 export type MkrSpec = Readonly<{
@@ -21,11 +23,11 @@ export function createSpec(params: CreateSpecParams): MkrSpec {
 }
 
 function normalizeVersion(version: string): string {
-  const r = /^v?(\d+\.\d+\.\d+)$/.exec(version);
-  if (!r) {
+  const cleanedVersion = semver.clean(version);
+  if (!cleanedVersion) {
     throw new Error(`Unsupported version format: ${version}`);
   }
-  return r[1];
+  return cleanedVersion;
 }
 
 function normalizePlatform(platform: NodeJS.Platform): MkrPlatform {

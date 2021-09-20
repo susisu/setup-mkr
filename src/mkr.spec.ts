@@ -9,6 +9,8 @@ describe("createSpec", () => {
   it.each([
     ["1.2.3", "1.2.3"],
     ["v1.2.3", "1.2.3"],
+    ["=1.2.3", "1.2.3"],
+    [" 1.2.3 ", "1.2.3"],
   ])("normalizes version format (%s => %s)", (input, output) => {
     const spec = createSpec({ version: input, platform: "linux", arch: "x64" });
     expect(spec).toEqual({ version: output, platform: "linux", arch: "amd64" });
