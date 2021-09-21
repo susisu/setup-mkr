@@ -81,11 +81,15 @@ async function download(release: tc.IToolRelease, file: tc.IToolReleaseFile): Pr
 }
 
 function install(toolPath: string, file: tc.IToolReleaseFile): void {
-  // The executable is placed under the directory whose name is the same as the archive file name
-  // excluding the file extension.
-  const binDirPath = path.join(toolPath, file.filename.split(".")[0]);
+  const binDirPath = path.join(toolPath, getBinDirName(file));
   core.debug(`Add '${binDirPath}' to PATH`);
   core.addPath(binDirPath);
+}
+
+export function getBinDirName(file: tc.IToolReleaseFile): string {
+  // The executable is placed under the directory whose name is the same as the archive file name
+  // excluding the file extension.
+  return file.filename.split(".")[0];
 }
 
 async function check(): Promise<void> {
