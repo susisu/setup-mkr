@@ -19,7 +19,7 @@ describe("inputs", () => {
   describe("getToken", () => {
     it("gets token from inputs", () => {
       expect(getToken({ ...inputs, token: "" })).toBe(undefined);
-      expect(getToken({ ...inputs, version: "xxxxx" })).toBe("xxxxx");
+      expect(getToken({ ...inputs, token: "xxxxx" })).toBe("xxxxx");
     });
   });
 });
