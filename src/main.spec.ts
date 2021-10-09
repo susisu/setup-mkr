@@ -25,14 +25,16 @@ describe("inputs", () => {
 });
 
 describe("getBinDirName", () => {
+  const file: tc.IToolReleaseFile = {
+    filename: "mkr_linux_amd64.tar.gz",
+    platform: "linux",
+    arch: "x64",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    download_url: "https://example.com/archive.tar.gz",
+  };
+
   it("returns file name excluding file extension", () => {
-    const file: tc.IToolReleaseFile = {
-      filename: "mkr_linux_amd64.tar.gz",
-      platform: "linux",
-      arch: "x64",
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      download_url: "https://example.com/archive.tar.gz",
-    };
-    expect(getBinDirName(file)).toBe("mkr_linux_amd64");
+    expect(getBinDirName({ ...file, filename: "mkr_linux_amd64.tar.gz" })).toBe("mkr_linux_amd64");
+    expect(getBinDirName({ ...file, filename: "mkr_darwin_amd64.zip" })).toBe("mkr_darwin_amd64");
   });
 });
