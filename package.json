@@ -37,7 +37,7 @@
     "@actions/tool-cache": "^1.7.1"
   },
   "devDependencies": {
-    "@susisu/eslint-config": "^0.0.39",
+    "@susisu/eslint-config": "^0.0.40",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.3",
     "@vercel/ncc": "^0.31.1",
