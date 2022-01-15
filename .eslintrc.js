@@ -5,7 +5,7 @@ module.exports = {
     {
       files: ["*.ts"],
       extends: [
-        "@susisu/eslint-config/preset/ts-types",
+        "@susisu/eslint-config/preset/ts",
         "prettier",
         "plugin:eslint-comments/recommended",
       ],
@@ -35,9 +35,9 @@ module.exports = {
     {
       files: ["*.js"],
       extends: [
-        "@susisu/eslint-config/preset/es",
-        "plugin:eslint-comments/recommended",
+        "@susisu/eslint-config/preset/js",
         "prettier",
+        "plugin:eslint-comments/recommended",
       ],
       parserOptions: {
         ecmaVersion: 2020,
