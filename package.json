@@ -24,6 +24,7 @@
     "lint:prettier": "prettier --check '*.js' src",
     "lint-fix:prettier": "prettier --write '*.js' src",
     "test": "jest",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "tsc --build tsconfig.build.json",
     "package": "ncc build --source-map --license licenses.txt",
     "clean": "run-s clean:build clean:rm",
