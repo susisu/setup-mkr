@@ -40,7 +40,7 @@
   "devDependencies": {
     "@susisu/eslint-config": "^0.0.56",
     "@types/jest": "^29.2.0",
-    "@types/node": "^18.11.7",
+    "@types/node": "^18.11.17",
     "@vercel/ncc": "^0.34.0",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
