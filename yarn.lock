@@ -677,14 +677,14 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
-"@susisu/eslint-config@^0.0.61":
-  version "0.0.61"
-  resolved "https://registry.yarnpkg.com/@susisu/eslint-config/-/eslint-config-0.0.61.tgz#c1e5023eea6aa19594cf843087aa40528ce7a9b2"
-  integrity sha512-NWkVBdfa/VQ41EQGC3n7J/2jCfVfCfyR8jwaO8wqyXAZziI+KwSjjWTmOWKErrst/9iJWzKb9DN5uy2cqr0zXQ==
+"@susisu/eslint-config@^0.0.62":
+  version "0.0.62"
+  resolved "https://registry.yarnpkg.com/@susisu/eslint-config/-/eslint-config-0.0.62.tgz#b68f0f61d507f62c971f7c5845c407f67d2a51c2"
+  integrity sha512-itCf3GFvS43nsRtsSaFXcVO/3OzRSMcmzt5man4R90p8Ml67cEq2tHCsOzqs8VvfKSO/G85FztB2+0lxbRh+eA==
   dependencies:
     "@susisu/eslint-plugin-safe-typescript" "^0.3.4"
-    "@typescript-eslint/eslint-plugin" "^5.53.0"
-    "@typescript-eslint/parser" "^5.53.0"
+    "@typescript-eslint/eslint-plugin" "^5.55.0"
+    "@typescript-eslint/parser" "^5.55.0"
 
 "@susisu/eslint-plugin-safe-typescript@^0.3.4":
   version "0.3.4"
@@ -797,7 +797,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@^5.53.0":
+"@typescript-eslint/eslint-plugin@^5.55.0":
   version "5.55.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.55.0.tgz#bc2400c3a23305e8c9a9c04aa40933868aaaeb47"
   integrity sha512-IZGc50rtbjk+xp5YQoJvmMPmJEYoC53SiKPXyqWfv15XoD2Y5Kju6zN0DwlmaGJp1Iw33JsWJcQ7nw0lGCGjVg==
@@ -813,7 +813,7 @@
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-"@typescript-eslint/parser@^5.53.0":
+"@typescript-eslint/parser@^5.55.0":
   version "5.55.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.55.0.tgz#8c96a0b6529708ace1dcfa60f5e6aec0f5ed2262"
   integrity sha512-ppvmeF7hvdhUUZWSd2EEWfzcFkjJzgNQzVST22nzg958CR+sphy8A6K7LXQZd6V75m1VKjp+J4g/PCEfSCmzhw==
