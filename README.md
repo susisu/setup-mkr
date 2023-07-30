@@ -1,4 +1,5 @@
 # Setup mkr
+
 [![CI](https://github.com/susisu/setup-mkr/workflows/CI/badge.svg)](https://github.com/susisu/setup-mkr/actions?query=workflow%3ACI)
 
 This action sets up [`mkr`](https://github.com/mackerelio/mkr), the official CLI for [Mackerel](https://en.mackerel.io/).
@@ -6,6 +7,7 @@ This action sets up [`mkr`](https://github.com/mackerelio/mkr), the official CLI
 **NOTE**: This action itself is NOT an official product of Mackerel.
 
 ## Usage
+
 ``` yml
 steps:
 - uses: actions/checkout@v3
@@ -24,7 +26,9 @@ It sets up the latest version of `mkr` by default. You can optionally set `mkr-v
 ```
 
 ## License
+
 [MIT License](http://opensource.org/licenses/mit-license.php)
 
 ## Author
+
 Susisu ([GitHub](https://github.com/susisu), [Twitter](https://twitter.com/susisu2413))
