@@ -10,7 +10,7 @@ module.exports = {
         "plugin:eslint-comments/recommended",
       ],
       parserOptions: {
-        ecmaVersion: 2020,
+        ecmaVersion: 2022,
         sourceType: "module",
         project: "./tsconfig.json",
       },
@@ -40,7 +40,7 @@ module.exports = {
         "plugin:eslint-comments/recommended",
       ],
       parserOptions: {
-        ecmaVersion: 2020,
+        ecmaVersion: 2022,
         sourceType: "script",
       },
       env: {
