@@ -1,5 +1,6 @@
-import * as tc from "@actions/tool-cache";
-import { Inputs, getVersion, getToken, getBinDirName } from "./main";
+import type * as tc from "@actions/tool-cache";
+import type { Inputs } from "./main";
+import { getVersion, getToken, getBinDirName } from "./main";
 
 describe("inputs", () => {
   const inputs: Inputs = {
