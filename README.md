@@ -10,7 +10,7 @@ This action sets up [`mkr`](https://github.com/mackerelio/mkr), the official CLI
 
 ``` yml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: susisu/setup-mkr@v3
 - run: mkr org # mkr throw, mkr wrap, mkr annotations create, etc.
   env:
