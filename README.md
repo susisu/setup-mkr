@@ -11,8 +11,8 @@ This action sets up [`mkr`](https://github.com/mackerelio/mkr), the official CLI
 ``` yml
 steps:
 - uses: actions/checkout@v3
-- uses: susisu/setup-mkr@v2
-- run: mkr org # or `mkr throw`, `mkr wrap`, `mkr annotations create`, ... 
+- uses: susisu/setup-mkr@v3
+- run: mkr org # mkr throw, mkr wrap, mkr annotations create, etc.
   env:
     MACKEREL_APIKEY: ${{ secrets.MACKEREL_APIKEY }}
 ```
@@ -20,7 +20,7 @@ steps:
 It sets up the latest version of `mkr` by default. You can optionally set `mkr-version` to select a specific version of `mkr`.
 
 ``` yml
-- uses: susisu/setup-mkr@v2
+- uses: susisu/setup-mkr@v3
   with:
     mkr-version: '^0.46.0'
 ```
