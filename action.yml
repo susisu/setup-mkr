@@ -9,7 +9,7 @@ inputs:
     description: 'The version of mkr to use.'
   token:
     description: 'The GitHub token used to get mkr versions'
-    default: ${{ github.token }}
+    default: ${{ github.server_url == 'https://github.com' && github.token || '' }}
 runs:
   using: 'node20'
   main: 'dist/index.js'
