@@ -46,12 +46,17 @@ export function getToken(inputs: Inputs): string | undefined {
 
 async function findRelease(version: string, token: string | undefined): Promise<tc.IToolRelease> {
   core.debug(`Find release for version '${version}'`);
-  const manifest = await tc.getManifestFromRepo("susisu", "mkr-versions", token, "main");
+  const auth = token ? getAuth(token) : undefined;
+  const manifest = await tc.getManifestFromRepo("susisu", "mkr-versions", auth, "main");
   const release = await tc.findFromManifest(version, true, manifest);
   if (!release) {
     throw new Error(`Release not fouond for version '${version}'`);
   }
   return release;
+}
+
+export function getAuth(token: string): string {
+  return `token ${token}`;
 }
 
 async function download(release: tc.IToolRelease, file: tc.IToolReleaseFile): Promise<string> {

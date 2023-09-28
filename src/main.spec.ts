@@ -1,6 +1,6 @@
 import type * as tc from "@actions/tool-cache";
 import type { Inputs } from "./main";
-import { getVersion, getToken, getBinDirName } from "./main";
+import { getVersion, getToken, getAuth, getBinDirName } from "./main";
 
 describe("inputs", () => {
   const inputs: Inputs = {
@@ -22,6 +22,12 @@ describe("inputs", () => {
       expect(getToken({ ...inputs, token: "" })).toBe(undefined);
       expect(getToken({ ...inputs, token: "xxxxx" })).toBe("xxxxx");
     });
+  });
+});
+
+describe("getAuth", () => {
+  it("returns authorization header", () => {
+    expect(getAuth("xxxxx")).toBe("token xxxxx");
   });
 });
 
