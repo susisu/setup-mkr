@@ -558,7 +558,7 @@ class OidcClient {
                 .catch(error => {
                 throw new Error(`Failed to get ID Token. \n 
         Error Code : ${error.statusCode}\n 
-        Error Message: ${error.result.message}`);
+        Error Message: ${error.message}`);
             });
             const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
             if (!id_token) {
@@ -2592,6 +2592,19 @@ class HttpClientResponse {
             }));
         });
     }
+    readBodyBuffer() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+                const chunks = [];
+                this.message.on('data', (chunk) => {
+                    chunks.push(chunk);
+                });
+                this.message.on('end', () => {
+                    resolve(Buffer.concat(chunks));
+                });
+            }));
+        });
+    }
 }
 exports.HttpClientResponse = HttpClientResponse;
 function isHttps(requestUrl) {
@@ -3096,7 +3109,13 @@ function getProxyUrl(reqUrl) {
         }
     })();
     if (proxyVar) {
-        return new URL(proxyVar);
+        try {
+            return new URL(proxyVar);
+        }
+        catch (_a) {
+            if (!proxyVar.startsWith('http://') && !proxyVar.startsWith('https://'))
+                return new URL(`http://${proxyVar}`);
+        }
     }
     else {
         return undefined;
@@ -6786,12 +6805,16 @@ function getToken(inputs) {
 }
 async function findRelease(version, token) {
     core.debug(`Find release for version '${version}'`);
-    const manifest = await tool_cache.getManifestFromRepo("susisu", "mkr-versions", token, "main");
+    const auth = token ? getAuth(token) : undefined;
+    const manifest = await tool_cache.getManifestFromRepo("susisu", "mkr-versions", auth, "main");
     const release = await tool_cache.findFromManifest(version, true, manifest);
     if (!release) {
         throw new Error(`Release not fouond for version '${version}'`);
     }
     return release;
+}
+function getAuth(token) {
+    return `token ${token}`;
 }
 async function download(release, file) {
     const toolName = "mkr";
