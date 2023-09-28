@@ -6805,12 +6805,16 @@ function getToken(inputs) {
 }
 async function findRelease(version, token) {
     core.debug(`Find release for version '${version}'`);
-    const manifest = await tool_cache.getManifestFromRepo("susisu", "mkr-versions", token, "main");
+    const auth = token ? getAuth(token) : undefined;
+    const manifest = await tool_cache.getManifestFromRepo("susisu", "mkr-versions", auth, "main");
     const release = await tool_cache.findFromManifest(version, true, manifest);
     if (!release) {
         throw new Error(`Release not fouond for version '${version}'`);
     }
     return release;
+}
+function getAuth(token) {
+    return `token ${token}`;
 }
 async function download(release, file) {
     const toolName = "mkr";
