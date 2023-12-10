@@ -27,10 +27,7 @@ module.exports = {
     },
     {
       files: ["*.spec.ts", "src/**/__tests__/**/*.ts"],
-      extends: ["plugin:jest/recommended", "plugin:jest-formatting/recommended"],
-      env: {
-        "jest/globals": true,
-      },
+      extends: ["plugin:vitest/recommended"],
     },
     {
       files: ["*.js"],

@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import type * as tc from "@actions/tool-cache";
 import type { Inputs } from "./main";
 import { getVersion, getToken, getAuth, getBinDirName } from "./main";
@@ -19,7 +20,7 @@ describe("inputs", () => {
 
   describe("getToken", () => {
     it("gets token from inputs", () => {
-      expect(getToken({ ...inputs, token: "" })).toBe(undefined);
+      expect(getToken({ ...inputs, token: "" })).toBeUndefined();
       expect(getToken({ ...inputs, token: "xxxxx" })).toBe("xxxxx");
     });
   });
