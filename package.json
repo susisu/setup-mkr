@@ -23,12 +23,9 @@
     "lint:check": "eslint '*.js' src",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest",
-    "build": "tsc --build tsconfig.build.json",
-    "package": "ncc build --source-map --license licenses.txt",
-    "clean": "run-s clean:build clean:rm",
-    "clean:build": "tsc --build tsconfig.build.json --clean",
-    "clean:rm": "rimraf lib dist",
-    "all": "run-s format:check lint:check test clean build package"
+    "build": "ncc build src/index.ts --source-map --license licenses.txt",
+    "clean": "rimraf dist",
+    "all": "run-s clean format:check lint:check test build"
   },
   "dependencies": {
     "@actions/core": "^1.10.1",

@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "lib",
-    "incremental": true,
-    "target": "es2022",
+    "outDir": "dist",
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "lib": ["es2022"],
+    "lib": ["esnext"],
     "strict": true,
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "skipLibCheck": true
   },
   "include": [
