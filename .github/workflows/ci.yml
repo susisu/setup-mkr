@@ -15,4 +15,7 @@ jobs:
         with:
           version: 8
       - run: pnpm install
-      - run: pnpm all
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm package
