@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+export default {
   printWidth: 100,
   tabWidth: 2,
   useTabs: false,
@@ -13,4 +11,5 @@ module.exports = {
   bracketSameLine: false,
   arrowParens: "always",
   endOfLine: "lf",
+  experimentalTernaries: true,
 };

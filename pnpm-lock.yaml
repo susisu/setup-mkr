@@ -37,6 +37,9 @@ devDependencies:
   eslint-plugin-vitest:
     specifier: ^0.3.10
     version: 0.3.13(eslint@8.55.0)(typescript@5.3.3)(vitest@1.0.4)
+  globals:
+    specifier: ^13.23.0
+    version: 13.23.0
   npm-run-all:
     specifier: ^4.1.5
     version: 4.1.5
