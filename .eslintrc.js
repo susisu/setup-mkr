@@ -4,11 +4,7 @@ module.exports = {
   overrides: [
     {
       files: ["*.ts"],
-      extends: [
-        "@susisu/eslint-config/preset/ts",
-        "prettier",
-        "plugin:eslint-comments/recommended",
-      ],
+      extends: ["@susisu/eslint-config/preset/ts", "prettier"],
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: "module",
@@ -21,9 +17,6 @@ module.exports = {
       globals: {
         NodeJS: true,
       },
-      rules: {
-        "eslint-comments/no-unused-disable": "error",
-      },
     },
     {
       files: ["*.spec.ts", "src/**/__tests__/**/*.ts"],
@@ -31,11 +24,7 @@ module.exports = {
     },
     {
       files: ["*.js"],
-      extends: [
-        "@susisu/eslint-config/preset/js",
-        "prettier",
-        "plugin:eslint-comments/recommended",
-      ],
+      extends: ["@susisu/eslint-config/preset/js", "prettier"],
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: "script",
@@ -43,9 +32,6 @@ module.exports = {
       env: {
         es6: true,
         node: true,
-      },
-      rules: {
-        "eslint-comments/no-unused-disable": "error",
       },
     },
   ],
