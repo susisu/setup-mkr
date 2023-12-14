@@ -35,8 +35,8 @@ devDependencies:
     specifier: ^9.1.0
     version: 9.1.0(eslint@8.55.0)
   eslint-plugin-vitest:
-    specifier: ^0.3.10
-    version: 0.3.13(eslint@8.55.0)(typescript@5.3.3)(vitest@1.0.4)
+    specifier: ^0.3.17
+    version: 0.3.17(eslint@8.55.0)(typescript@5.3.3)(vitest@1.0.4)
   globals:
     specifier: ^13.23.0
     version: 13.23.0
@@ -1320,8 +1320,8 @@ packages:
       eslint: 8.55.0
     dev: true
 
-  /eslint-plugin-vitest@0.3.13(eslint@8.55.0)(typescript@5.3.3)(vitest@1.0.4):
-    resolution: {integrity: sha512-k3itP/Nn/Y8s1TAVll8c3g/L3UPSp3FqE1TKULa8GJPkFZhq/K2O6F64ENRhLOmcOSSWRkJK2ZA8g8RH1w7C1g==}
+  /eslint-plugin-vitest@0.3.17(eslint@8.55.0)(typescript@5.3.3)(vitest@1.0.4):
+    resolution: {integrity: sha512-JzljEhaJ3YDNJc4n2VTlOdMhElwLsQQprVtgY+eoKQkearKiFP53Vw3515J3jb4ZM8TVnpk7UsIFXM0gbhz+vQ==}
     engines: {node: ^18.0.0 || >= 20.0.0}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': '*'
