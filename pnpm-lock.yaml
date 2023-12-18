@@ -17,8 +17,8 @@ dependencies:
 
 devDependencies:
   '@susisu/eslint-config':
-    specifier: ^0.0.72
-    version: 0.0.72(eslint@8.55.0)(typescript@5.3.3)
+    specifier: ^0.0.73
+    version: 0.0.73(eslint@8.55.0)(typescript@5.3.3)
   '@types/node':
     specifier: ^20.10.4
     version: 20.10.4
@@ -655,23 +655,24 @@ packages:
       - typescript
     dev: true
 
-  /@susisu/eslint-config@0.0.72(eslint@8.55.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-wlTJItVHtRsz4HmyxIEU98ePSO8ik6qwFCbdSFUOo/YvW+vuXd3jrs5s6+4d/PdOV933ifRf0DTOvs9+B56mTg==}
+  /@susisu/eslint-config@0.0.73(eslint@8.55.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-CUozdKaoIRNmriLkVbc/I+BSWhWTeWIiP+7kuVotvV+vQs8mYoxAse6g2lHyYPkbVWBFhgtFTCWhmIzmO3uZ8g==}
     peerDependencies:
       eslint: ^8.50.0
     dependencies:
       '@stylistic/eslint-plugin': 1.5.0(eslint@8.55.0)(typescript@5.3.3)
-      '@susisu/eslint-plugin-safe-typescript': 0.5.1(@typescript-eslint/parser@6.13.2)(eslint@8.55.0)(typescript@5.3.3)
+      '@susisu/eslint-plugin-safe-typescript': 0.5.2(@typescript-eslint/parser@6.13.2)(eslint@8.55.0)(typescript@5.3.3)
       '@typescript-eslint/eslint-plugin': 6.13.2(@typescript-eslint/parser@6.13.2)(eslint@8.55.0)(typescript@5.3.3)
       '@typescript-eslint/parser': 6.13.2(eslint@8.55.0)(typescript@5.3.3)
       eslint: 8.55.0
+      eslint-define-config: 2.0.0
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /@susisu/eslint-plugin-safe-typescript@0.5.1(@typescript-eslint/parser@6.13.2)(eslint@8.55.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-W2c/g8cPHV50618ORhyj7eAXChLLtCRnKAuyk03uQ7ELajYQ/g0Rkcbhe8f9+sT4cLhAezsbOgutmmFj2kHF2Q==}
+  /@susisu/eslint-plugin-safe-typescript@0.5.2(@typescript-eslint/parser@6.13.2)(eslint@8.55.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-/r3tl3sTox6/KW8nrZxgyLa/1QC+J/PUBW+/cqZ+5XVYLVw2Q2dpSjhuVhKY7KRv1o1q54YZ0tuUBA9jHmciag==}
     peerDependencies:
       '@typescript-eslint/parser': '>=6.0.0'
       typescript: '*'
@@ -1318,6 +1319,11 @@ packages:
       eslint: '>=7.0.0'
     dependencies:
       eslint: 8.55.0
+    dev: true
+
+  /eslint-define-config@2.0.0:
+    resolution: {integrity: sha512-M8ao9mAE35BGwjZeT8ZlsRA42wcJHWS29Avd0qfeclRXig6uTnGXcaO7UxVyFzUA1VJtxeV/acw4KrhJA3JqxQ==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0', pnpm: '>=8.6.0'}
     dev: true
 
   /eslint-plugin-vitest@0.3.13(eslint@8.55.0)(typescript@5.3.3)(vitest@1.0.4):
