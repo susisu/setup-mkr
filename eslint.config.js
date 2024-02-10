@@ -22,7 +22,7 @@ export default [
           },
         },
       },
-    ]
+    ],
   ),
   ...map(
     {
@@ -37,7 +37,7 @@ export default [
           ...vitestPlugin.configs.recommended.rules,
         },
       },
-    ]
+    ],
   ),
   ...map(
     {
@@ -54,7 +54,7 @@ export default [
           },
         },
       },
-    ]
+    ],
   ),
   prettierConfig,
 ];
