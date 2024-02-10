@@ -31,9 +31,6 @@ devDependencies:
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
-  eslint-config-prettier:
-    specifier: ^9.1.0
-    version: 9.1.0(eslint@8.56.0)
   eslint-plugin-vitest:
     specifier: ^0.3.22
     version: 0.3.22(eslint@8.56.0)(typescript@5.3.3)(vitest@1.2.2)
