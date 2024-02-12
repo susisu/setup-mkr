@@ -17,8 +17,8 @@ dependencies:
 
 devDependencies:
   '@susisu/eslint-config':
-    specifier: ^0.0.76
-    version: 0.0.76(eslint@8.56.0)(typescript@5.3.3)
+    specifier: ^0.0.78
+    version: 0.0.78(eslint@8.56.0)(typescript@5.3.3)
   '@types/node':
     specifier: ^20.11.17
     version: 20.11.17
@@ -660,13 +660,13 @@ packages:
       - typescript
     dev: true
 
-  /@susisu/eslint-config@0.0.76(eslint@8.56.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-ORvmPvo0foZva7NDgVpSjB/IoqzpUSqj8221aRICa+7XsL3GUxQ3zXmc+sd2X1cZ+G8V7S5JoWO9Q4AeZ7at+g==}
+  /@susisu/eslint-config@0.0.78(eslint@8.56.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-s5TbWnx6acDSESN5DZrukvCFbe51zErNvjrbvimqt5UJoKm8li2dFT7ivhDxi7sA3IuVvLb02nacv5Rqe52ESw==}
     peerDependencies:
       eslint: ^8.50.0
     dependencies:
       '@stylistic/eslint-plugin': 1.6.1(eslint@8.56.0)(typescript@5.3.3)
-      '@susisu/eslint-plugin-safe-typescript': 0.5.3(@typescript-eslint/parser@6.21.0)(eslint@8.56.0)(typescript@5.3.3)
+      '@susisu/eslint-plugin-safe-typescript': 0.6.1(@typescript-eslint/parser@6.21.0)(eslint@8.56.0)(typescript@5.3.3)
       '@types/eslint-config-prettier': 6.11.3
       '@typescript-eslint/eslint-plugin': 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.56.0)(typescript@5.3.3)
       '@typescript-eslint/parser': 6.21.0(eslint@8.56.0)(typescript@5.3.3)
@@ -678,14 +678,15 @@ packages:
       - typescript
     dev: true
 
-  /@susisu/eslint-plugin-safe-typescript@0.5.3(@typescript-eslint/parser@6.21.0)(eslint@8.56.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-1Denz/gK+sr6UALyQtCeZEPwi/iPaux02gMKm0oziTGhCZhqBDmeSS2MrEuao46GBHwqNnO1FasXxx27X1tlqw==}
+  /@susisu/eslint-plugin-safe-typescript@0.6.1(@typescript-eslint/parser@6.21.0)(eslint@8.56.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-ifdOYcBcsj3wrcq0qXBxdgGzduILcCd3vW7tJdtlZ0zliA6gk6vRGpXXZS0KbIQaYjzyHq8mxSiGpL8Quv7jBA==}
     peerDependencies:
       '@typescript-eslint/parser': '>=6.0.0'
       typescript: '*'
     dependencies:
       '@typescript-eslint/parser': 6.21.0(eslint@8.56.0)(typescript@5.3.3)
       '@typescript-eslint/utils': 6.21.0(eslint@8.56.0)(typescript@5.3.3)
+      eslint-define-config: 2.1.0
       typescript: 5.3.3
     transitivePeerDependencies:
       - eslint
