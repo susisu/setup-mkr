@@ -1,8 +1,8 @@
-import { make } from "@susisu/eslint-config";
+import { config } from "@susisu/eslint-config";
 import vitestPlugin from "eslint-plugin-vitest";
 import globals from "globals";
 
-export default make({}, [
+export default config({}, [
   {
     plugins: {
       vitest: vitestPlugin,
