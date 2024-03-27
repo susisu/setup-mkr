@@ -28,7 +28,7 @@ export async function run(): Promise<void> {
 
     await check();
     core.debug("Done");
-  } catch (err: unknown) {
+  } catch (err) {
     core.setFailed(String(err));
   }
 }
