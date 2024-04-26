@@ -32,3 +32,8 @@ It sets up the latest version of `mkr` by default. You can optionally set `mkr-v
 ## Author
 
 Susisu ([GitHub](https://github.com/susisu), [Twitter](https://twitter.com/susisu2413))
+
+## Related Repos
+
+- [mackerelio/mkr](https://github.com/mackerelio/mkr)
+- [susisu/mkr-versions](https://github.com/susisu/mkr-versions)
