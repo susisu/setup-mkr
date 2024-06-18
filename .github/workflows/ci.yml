@@ -5,15 +5,14 @@ on:
     branches:
       - main
       - 'releases/*'
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
       - run: pnpm install
       - run: pnpm format:check
       - run: pnpm lint:check
