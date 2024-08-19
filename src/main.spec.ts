@@ -37,7 +37,6 @@ describe("getBinDirName", () => {
     filename: "mkr_linux_amd64.tar.gz",
     platform: "linux",
     arch: "x64",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     download_url: "https://example.com/archive.tar.gz",
   };
 
