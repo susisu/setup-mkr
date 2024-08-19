@@ -12,13 +12,13 @@ export default config({}, [
     files: ["src/**/*.ts"],
     languageOptions: {
       globals: {
-        ...globals.es2021,
+        ...globals.es2023,
         ...globals.node,
       },
     },
   },
   {
-    files: ["src/**/*.spec.ts", "src/**/__tests__/**/*.ts"],
+    files: ["src/**/*.spec.ts"],
     rules: {
       ...vitestPlugin.configs.recommended.rules,
     },
@@ -27,7 +27,7 @@ export default config({}, [
     files: ["*.js"],
     languageOptions: {
       globals: {
-        ...globals.es2021,
+        ...globals.es2023,
         ...globals.node,
       },
     },
