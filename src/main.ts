@@ -22,7 +22,8 @@ export async function run(): Promise<void> {
     const release = await findRelease(version, token);
     core.info(`Use mkr ${release.version}`);
 
-    const file = release.files[0];
+    const file = getReleaseFile(release);
+
     const toolPath = await download(release, file);
     install(toolPath, file);
 
@@ -57,6 +58,18 @@ async function findRelease(version: string, token: string | undefined): Promise<
 
 export function getAuth(token: string): string {
   return `token ${token}`;
+}
+
+export function getReleaseFile(release: tc.IToolRelease): tc.IToolReleaseFile {
+  const file = release.files.at(0);
+  if (!file) {
+    throw new Error("File not found in the release");
+  }
+  // sanity check
+  if (!file.download_url.startsWith("https://github.com/mackerelio/mkr/releases/download/")) {
+    throw new Error(`Unknown download URL '${file.download_url}'`);
+  }
+  return file;
 }
 
 async function download(release: tc.IToolRelease, file: tc.IToolReleaseFile): Promise<string> {
