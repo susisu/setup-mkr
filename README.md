@@ -22,7 +22,7 @@ It sets up the latest version of `mkr` by default. You can optionally set `mkr-v
 ``` yml
 - uses: susisu/setup-mkr@v3
   with:
-    mkr-version: '^0.57.0'
+    mkr-version: '^0.59.0'
 ```
 
 ## License
