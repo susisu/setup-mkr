@@ -19,7 +19,7 @@ steps:
 It sets up the latest version of `mkr` by default. You can optionally set `mkr-version` to select a specific version of `mkr`.
 
 ``` yml
-- uses: susisu/setup-mkr@v3
+- uses: susisu/setup-mkr@v4
   with:
     mkr-version: '^0.62.0'
 ```
