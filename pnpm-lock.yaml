@@ -49,7 +49,7 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       typescript:
-        specifier: ^5.9.2
+        specifier: ~5.9.2
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
