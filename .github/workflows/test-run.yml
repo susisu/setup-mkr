@@ -1,9 +1,11 @@
 name: 'Test Run'
+
 on:
   workflow_dispatch:
     inputs:
       version:
         description: 'The version of mkr to install.'
+
 jobs:
   run:
     runs-on: ${{ matrix.os }}
@@ -13,7 +15,7 @@ jobs:
           - ubuntu-latest
           - macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./
         with:
           mkr-version: ${{ github.event.inputs.version }}
