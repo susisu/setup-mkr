@@ -30,22 +30,22 @@
     "all": "run-s clean format:check lint:check typecheck test build"
   },
   "dependencies": {
-    "@actions/core": "^1.11.1",
-    "@actions/exec": "^1.1.1",
+    "@actions/core": "^2.0.1",
+    "@actions/exec": "^2.0.0",
     "@actions/tool-cache": "^2.0.2"
   },
   "devDependencies": {
-    "@susisu/eslint-config": "^0.0.100",
-    "@types/node": "^24.9.2",
+    "@susisu/eslint-config": "^0.0.101",
+    "@types/node": "^25.0.1",
     "@vercel/ncc": "^0.38.4",
-    "@vitest/coverage-v8": "^4.0.6",
-    "@vitest/eslint-plugin": "^1.4.0",
-    "eslint": "^9.39.0",
+    "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/eslint-plugin": "^1.5.2",
+    "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "npm-run-all2": "^8.0.4",
-    "prettier": "3.6.2",
-    "rimraf": "^6.1.0",
+    "prettier": "3.7.4",
+    "rimraf": "^6.1.2",
     "typescript": "~5.9.3",
-    "vitest": "^4.0.6"
+    "vitest": "^4.0.15"
   }
 }
