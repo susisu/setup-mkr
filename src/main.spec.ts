@@ -70,7 +70,7 @@ describe("getReleaseFile", () => {
     };
     expect(() => {
       getReleaseFile(release);
-    }).toThrowError("File not found in the release");
+    }).toThrow("File not found in the release");
   });
 
   it("throws if the download URL is unknown i.e. does not start with https://github.com/mackerelio/mkr/releases/download/", () => {
@@ -89,7 +89,7 @@ describe("getReleaseFile", () => {
     };
     expect(() => {
       getReleaseFile(release);
-    }).toThrowError("Unknown download URL 'https://example.com/archive.tar.gz'");
+    }).toThrow("Unknown download URL 'https://example.com/archive.tar.gz'");
   });
 });
 
