@@ -34968,6 +34968,7 @@ function getReleaseFile(release) {
 }
 async function download(release, file) {
     const toolName = "mkr";
+    // oxlint-disable-next-line unicorn/no-array-callback-reference unicorn/no-array-method-this-argument
     let toolPath = find(toolName, release.version);
     if (toolPath) {
         core_debug(`Cache found at '${toolPath}'`);
