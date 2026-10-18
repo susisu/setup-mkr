@@ -1,10 +1,10 @@
-name: 'Test Run'
+name: "Test Run"
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'The version of mkr to install.'
+        description: "The version of mkr to install."
 
 jobs:
   run:

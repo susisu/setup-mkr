@@ -1,27 +1,27 @@
 {
-  "private": true,
   "name": "@susisu/setup-mkr",
   "version": "4.0.2",
+  "private": true,
   "description": "Setup mkr - CLI for Mackerel",
   "keywords": [
     "actions",
-    "setup",
+    "mackerel",
     "mkr",
-    "mackerel"
+    "setup"
   ],
+  "license": "MIT",
+  "author": "Susisu <susisu2413@yahoo.co.jp>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/susisu/setup-mkr.git"
   },
-  "author": "Susisu <susisu2413@yahoo.co.jp>",
-  "license": "MIT",
   "type": "module",
   "main": "lib/index.js",
   "scripts": {
-    "format": "prettier --write '*.js' src",
-    "format:check": "prettier --check '*.js' src",
-    "lint": "eslint --fix '*.js' src",
-    "lint:check": "eslint '*.js' src",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "lint": "oxlint --fix",
+    "lint:check": "oxlint",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --coverage",
     "test:dev": "vitest dev --coverage.enabled --coverage.reporter=text",
@@ -35,15 +35,14 @@
     "@actions/tool-cache": "^4.0.0"
   },
   "devDependencies": {
-    "@susisu/eslint-config": "^0.0.102",
+    "@susisu/oxlint-config": "^0.0.1",
     "@types/node": "^25.6.0",
     "@vercel/ncc": "^0.38.4",
     "@vitest/coverage-v8": "^4.1.4",
-    "@vitest/eslint-plugin": "^1.6.16",
-    "eslint": "^10.2.1",
-    "globals": "^17.5.0",
     "npm-run-all2": "^8.0.4",
-    "prettier": "3.8.3",
+    "oxfmt": "^0.73.0",
+    "oxlint": "^1.88.0",
+    "oxlint-tsgolint": "^7.0.2004",
     "rimraf": "^6.1.3",
     "typescript": "~6.0.3",
     "vitest": "^4.1.4"

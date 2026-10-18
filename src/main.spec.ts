@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
 import type * as tc from "@actions/tool-cache";
+import { describe, it, expect } from "vitest";
+
 import type { Inputs } from "./main";
 import { getVersion, getToken, getAuth, getReleaseFile, getBinDirName } from "./main";
 

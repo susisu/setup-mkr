@@ -1,15 +1,15 @@
-name: 'Setup mkr'
-description: 'Setup mkr - CLI for Mackerel'
-author: 'Susisu <susisu2413@yahoo.co.jp>'
+name: "Setup mkr"
+description: "Setup mkr - CLI for Mackerel"
+author: "Susisu <susisu2413@yahoo.co.jp>"
 branding:
   icon: activity
   color: white
 inputs:
   mkr-version:
-    description: 'The version of mkr to use.'
+    description: "The version of mkr to use."
   token:
-    description: 'The GitHub token used to get mkr versions'
+    description: "The GitHub token used to get mkr versions"
     default: ${{ github.server_url == 'https://github.com' && github.token || '' }}
 runs:
-  using: 'node24'
-  main: 'dist/index.js'
+  using: "node24"
+  main: "dist/index.js"

@@ -1,20 +1,22 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
     "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
     "lib": ["esnext"],
-    "types": ["node"],
     "strict": true,
-    "sourceMap": true,
-    "declaration": false,
-    "declarationMap": false,
-    "skipLibCheck": true
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "rewriteRelativeImportExtensions": true,
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["**/*"]
 }

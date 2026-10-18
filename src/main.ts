@@ -1,4 +1,5 @@
 import * as path from "node:path";
+
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import * as tc from "@actions/tool-cache";
@@ -107,7 +108,8 @@ function install(toolPath: string, file: tc.IToolReleaseFile): void {
 export function getBinDirName(file: tc.IToolReleaseFile): string {
   // The executable is placed under the directory whose name is the same as the archive file name
   // excluding the file extension.
-  return file.filename.split(".")[0];
+  // oxlint-disable-next-line typescript/no-non-null-assertion
+  return file.filename.split(".")[0]!;
 }
 
 async function check(): Promise<void> {
