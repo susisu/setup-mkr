@@ -1,6 +1,6 @@
 {
   "name": "@susisu/setup-mkr",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "private": true,
   "description": "Setup mkr - CLI for Mackerel",
   "keywords": [
