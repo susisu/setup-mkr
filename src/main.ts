@@ -76,6 +76,7 @@ export function getReleaseFile(release: tc.IToolRelease): tc.IToolReleaseFile {
 async function download(release: tc.IToolRelease, file: tc.IToolReleaseFile): Promise<string> {
   const toolName = "mkr";
 
+  // oxlint-disable-next-line unicorn/no-array-callback-reference unicorn/no-array-method-this-argument
   let toolPath = tc.find(toolName, release.version);
   if (toolPath) {
     core.debug(`Cache found at '${toolPath}'`);

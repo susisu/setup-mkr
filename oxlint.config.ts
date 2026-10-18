@@ -9,8 +9,4 @@ export default config({
     correctness: "error",
   },
   ignorePatterns: ["dist/**/*"],
-  rules: {
-    "unicorn/no-array-callback-reference": "off",
-    "unicorn/no-array-method-this-argument": "off",
-  },
 });
